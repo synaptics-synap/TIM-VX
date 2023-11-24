@@ -142,6 +142,8 @@ string(REGEX REPLACE "DEF_OP\\(" "-DVSI_FEAT_OP_" custom_op_list_tmp ${custom_op
 string(REGEX REPLACE "\\)" " " custom_op_as_flags ${custom_op_list_tmp})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${op_as_flags} ${custom_op_as_flags}")
 
+add_link_options($<$<CONFIG:RELEASE>:-s>)
+
 add_library(${TARGET_NAME} ${${TARGET_NAME}_SRCS})
 target_include_directories(${TARGET_NAME} PRIVATE ${LITE_INC_DIRS})
 target_link_libraries(${TARGET_NAME} PUBLIC
@@ -155,6 +157,12 @@ endif()
 if(${TIM_VX_USE_EXTERNAL_OVXLIB})
   #-Wl,--whole-archive should not applied to external library, but only for shared library
     target_link_libraries(${TARGET_NAME} PUBLIC tim_internal)
+endif()
+
+if(${TIM_VX_ENABLE_SYNAP})
+    add_subdirectory(vx/synap)
+    target_link_libraries(${TARGET_NAME} PRIVATE synap)
+    target_compile_definitions(${TARGET_NAME} PUBLIC TIM_VX_ENABLE_SYNAP=1)
 endif()
 
 if(TIM_VX_ENABLE_PLATFORM AND TIM_VX_ENABLE_GRPC)
