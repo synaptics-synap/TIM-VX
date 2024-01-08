@@ -121,7 +121,7 @@ class GraphImpl : public Graph {
 #endif
   CompileOption options_;
 
- private:
+ protected:
   /// Setup graph
   bool Setup();
 };
