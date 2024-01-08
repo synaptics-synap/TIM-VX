@@ -36,11 +36,24 @@ class GraphSynap : public GraphImpl {
         GraphImpl(context, options)
     {}
 
+    ~GraphSynap();
+
   bool Compile() override;
+
+  bool CompileToBinary(void* buf, size_t* size) override;
+
   bool Run() override;
 
+  bool SetCachePath(const std::string& cachepath) override;
+
  private:
-  synaptics::synap::Network _network;
+  synaptics::synap::Network network_;
+
+  uint8_t* ebg_buffer_{};
+  size_t ebg_size_{};
+
+  std::string cache_path_{};
+
 };
 
 }  // namespace vx

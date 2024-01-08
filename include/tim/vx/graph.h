@@ -75,6 +75,11 @@ class Graph {
 
   virtual bool Run() = 0;
 
+  virtual bool SetCachePath(const std::string& cachepath) {
+    (void)(cachepath);
+     return true;
+  }
+
   template <typename OpType, typename... Params>
   std::shared_ptr<OpType> CreateOperation(Params... parameters) {
     auto op = std::make_shared<OpType>(this, parameters...);
